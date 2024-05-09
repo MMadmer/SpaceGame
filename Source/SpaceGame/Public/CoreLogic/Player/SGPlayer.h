@@ -40,6 +40,8 @@ public:
 	virtual void TryAttack_Implementation(const bool Value) override;
 
 protected:
+	virtual void BeginPlay() override;
+
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	UBGCHealthComponent* HealthComponent;
 
@@ -48,13 +50,4 @@ protected:
 
 	uint8 bWantsToRun : 1;
 	uint8 bIsMovingForward : 1;
-	FTraceDelegate InteractionTraceDelegate;
-
-	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
-	void OnInteract();
-
-	UFUNCTION(BlueprintCallable, BlueprintNativeEvent)
-	void OnAttack();
-
-	virtual void BeginPlay() override;
 };

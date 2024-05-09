@@ -42,11 +42,3 @@ void ASGPlayer::TryAttack_Implementation(const bool Value)
 {
 	ISGPlayerControls::TryAttack_Implementation(Value);
 }
-
-void ASGPlayer::OnAttack_Implementation()
-{
-}
-
-void ASGPlayer::OnInteract_Implementation()
-{
-}
