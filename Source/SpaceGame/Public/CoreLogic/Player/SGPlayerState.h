@@ -13,5 +13,7 @@ UCLASS()
 class SPACEGAME_API ASGPlayerState : public APlayerState
 {
 	GENERATED_BODY()
-	
+
+public:
+	ASGPlayerState();
 };

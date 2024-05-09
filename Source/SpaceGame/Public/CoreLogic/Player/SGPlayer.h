@@ -4,7 +4,6 @@
 
 #include "CoreMinimal.h"
 #include "PaperZDCharacter.h"
-#include "GameFramework/CharacterMovementComponent.h"
 #include "Interfaces/SGPlayerControls.h"
 #include "SGPlayer.generated.h"
 
@@ -20,19 +19,7 @@ class SPACEGAME_API ASGPlayer : public APaperZDCharacter, public ISGPlayerContro
 	GENERATED_BODY()
 
 public:
-	ASGPlayer(const FObjectInitializer& ObjInit);
-
-	UFUNCTION(BlueprintCallable)
-	FORCEINLINE bool IsMoving() const
-	{
-		return !GetVelocity().IsZero() && !GetCharacterMovement()->IsFalling();
-	}
-
-	UFUNCTION(BlueprintCallable)
-	FORCEINLINE bool IsRunning() const
-	{
-		return bWantsToRun && bIsMovingForward && !GetVelocity().IsZero();
-	}
+	explicit ASGPlayer(const FObjectInitializer& ObjInit);
 
 	virtual void TryMove_Implementation(const FVector2D Value) override;
 	virtual void TryRun_Implementation(const bool Value) override;
@@ -47,7 +34,4 @@ protected:
 
 	UPROPERTY(EditAnywhere, BlueprintReadOnly)
 	UBGCStaminaComponent* StaminaComponent;
-
-	uint8 bWantsToRun : 1;
-	uint8 bIsMovingForward : 1;
 };
