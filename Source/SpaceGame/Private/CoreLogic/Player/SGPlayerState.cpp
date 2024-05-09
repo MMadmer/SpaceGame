@@ -3,3 +3,8 @@
 
 #include "CoreLogic/Player/SGPlayerState.h"
 
+ASGPlayerState::ASGPlayerState()
+{
+	PrimaryActorTick.bCanEverTick = false;
+	PrimaryActorTick.bStartWithTickEnabled = false;
+}
