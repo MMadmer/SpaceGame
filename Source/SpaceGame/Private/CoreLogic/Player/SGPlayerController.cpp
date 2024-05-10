@@ -44,6 +44,7 @@ void ASGPlayerController::SetupInputComponent()
 		EnhancedInputComponent->BindAction(RunAction, ETriggerEvent::Triggered, this, &ThisClass::TryRun);
 		EnhancedInputComponent->BindAction(InteractAction, ETriggerEvent::Triggered, this, &ThisClass::TryInteract);
 		EnhancedInputComponent->BindAction(AttackAction, ETriggerEvent::Triggered, this, &ThisClass::TryAttack);
+		EnhancedInputComponent->BindAction(BlockAction, ETriggerEvent::Triggered, this, &ThisClass::TryBlock);
 	}
 	else
 	{
@@ -89,4 +90,14 @@ void ASGPlayerController::TryAttack(const FInputActionValue& Value)
 	if (!ControlledPawn->Implements<USGPlayerControls>()) return;
 
 	ISGPlayerControls::Execute_TryAttack(ControlledPawn, Value.Get<bool>());
+}
+
+void ASGPlayerController::TryBlock(const FInputActionValue& Value)
+{
+	APawn* ControlledPawn = GetPawn();
+	if (!ControlledPawn) return;
+
+	if (!ControlledPawn->Implements<USGPlayerControls>()) return;
+
+	ISGPlayerControls::Execute_TryBlock(ControlledPawn, Value.Get<bool>());
 }

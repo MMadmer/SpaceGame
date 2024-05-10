@@ -43,7 +43,7 @@ void UBGCHealthComponent::OnTakeAnyDamage(AActor* DamagedActor, float Damage, co
 		return;
 	}
 
-	SetHealth(Health - Damage);
+	SetHealth(Health - Damage * (1 - DamageResistance));
 }
 
 void UBGCHealthComponent::SetHealth(const float NewHealth)

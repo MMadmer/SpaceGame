@@ -25,6 +25,7 @@ public:
 	virtual void TryRun_Implementation(const bool Value) override;
 	virtual void TryInteract_Implementation(const bool Value) override;
 	virtual void TryAttack_Implementation(const bool Value) override;
+	virtual void TryBlock_Implementation(const bool Value) override;
 
 protected:
 	virtual void BeginPlay() override;

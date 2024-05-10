@@ -59,3 +59,8 @@ void ASGPlayer::TryAttack_Implementation(const bool Value)
 {
 	ISGPlayerControls::TryAttack_Implementation(Value);
 }
+
+void ASGPlayer::TryBlock_Implementation(const bool Value)
+{
+	ISGPlayerControls::TryBlock_Implementation(Value);
+}

@@ -33,4 +33,7 @@ public:
 
 	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category="Player Controls")
 	void TryAttack(const bool Value);
+
+	UFUNCTION(BlueprintCallable, BlueprintNativeEvent, Category="Player Controls")
+	void TryBlock(const bool Value);
 };

@@ -58,8 +58,21 @@ public:
 	UFUNCTION(BlueprintPure, Category = "Protection")
 	FORCEINLINE uint8 GetBarriers() const { return Barriers; }
 
+	UFUNCTION(BlueprintCallable)
+	FORCEINLINE void SetDamageResistance(const float NewResistance)
+	{
+		DamageResistance = FMath::Clamp(NewResistance, 0.0f, 1.0f);
+	}
+
+	UFUNCTION(BlueprintCallable)
+	FORCEINLINE float GetResistance() const { return DamageResistance; }
+
 protected:
 	virtual void BeginPlay() override;
+
+	/** Normalized resistance value.*/
+	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (ClampMin="0", ClampMax="1", UIMin="0", UIMax="1"))
+	float DamageResistance = 0.0f;
 
 	float Health = 0.0f;
 	uint8 Barriers = 0;

@@ -39,6 +39,9 @@ protected:
 
 	UPROPERTY(EditDefaultsOnly, Category="Input|Supported Actions")
 	UInputAction* AttackAction;
+
+	UPROPERTY(EditDefaultsOnly, Category="Input|Supported Actions")
+	UInputAction* BlockAction;
 	// ------------------------------------------------------------
 
 	virtual void BeginPlay() override;
@@ -48,4 +51,5 @@ protected:
 	void TryRun(const FInputActionValue& Value);
 	void TryInteract(const FInputActionValue& Value);
 	void TryAttack(const FInputActionValue& Value);
+	void TryBlock(const FInputActionValue& Value);
 };
