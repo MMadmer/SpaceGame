@@ -4,10 +4,10 @@
 
 UBGCStaminaComponent::UBGCStaminaComponent(): bFrozen(false), bAutoRegen(true)
 {
-	PrimaryComponentTick.bCanEverTick = false;
-	PrimaryComponentTick.bStartWithTickEnabled = false;
+	PrimaryComponentTick.bCanEverTick = true;
+	PrimaryComponentTick.bStartWithTickEnabled = true;
 
-	StaminaUpdateTime = 1.0f / static_cast<float>(StaminaRegenFrameRate);
+	PrimaryComponentTick.TickInterval = 1.0f / static_cast<float>(StaminaRegenFrameRate);
 	StaminaModifier = MaxStamina / (StaminaRegenTime * StaminaRegenFrameRate);
 }
 
@@ -18,13 +18,19 @@ void UBGCStaminaComponent::BeginPlay()
 	SetStamina(MaxStamina);
 }
 
+void UBGCStaminaComponent::TickComponent(float DeltaTime, ELevelTick TickType,
+                                         FActorComponentTickFunction* ThisTickFunction)
+{
+	Super::TickComponent(DeltaTime, TickType, ThisTickFunction);
+
+	StaminaUpdate();
+}
+
 void UBGCStaminaComponent::StaminaUpdate()
 {
 	SetStamina(Stamina + StaminaModifier);
 
-	if (const UWorld* World = GetWorld(); IsStaminaFull() && World)
-		World->GetTimerManager().ClearTimer(
-			StaminaTimerHandle);
+	if (IsStaminaFull()) SetComponentTickEnabled(false);
 }
 
 void UBGCStaminaComponent::SetStamina(const float NewStamina)
@@ -39,7 +45,11 @@ void UBGCStaminaComponent::SetStamina(const float NewStamina)
 
 	if (IsEmpty()) OnStaminaEmpty.Broadcast();
 
+	if (StaminaDelta < 0)
+		SetComponentTickEnabled(false);
 	if (const UWorld* World = GetWorld(); World && Stamina < MaxStamina)
-		World->GetTimerManager().SetTimer(
-			StaminaTimerHandle, this, &ThisClass::StaminaUpdate, StaminaUpdateTime, true, StaminaDelay);
+		World->GetTimerManager().SetTimer(StaminaTimerHandle, [&]
+		{
+			SetComponentTickEnabled(true);
+		}, StaminaRegenDelay, false);
 }

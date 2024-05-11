@@ -17,6 +17,8 @@ class BASEGAMECOMPONENTS_API UBGCStaminaComponent : public UActorComponent
 
 public:
 	UBGCStaminaComponent();
+	virtual void TickComponent(float DeltaTime, ELevelTick TickType,
+	                           FActorComponentTickFunction* ThisTickFunction) override;
 
 	/** Calls when stamina is gone(stamina = 0).*/
 	UPROPERTY(BlueprintAssignable, Category = "Stamina")
@@ -40,7 +42,7 @@ public:
 	/** Delay before start stamina regeneration.*/
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Stamina",
 		meta = (EditCondition = "bAutoRegen", ClampMin = "0.01"))
-	float StaminaDelay = 5.0f;
+	float StaminaRegenDelay = 3.0f;
 
 	/** Time before full stamina regeneration from 0 to maximum.*/
 	UPROPERTY(EditDefaultsOnly, BlueprintReadWrite, Category = "Stamina",
@@ -86,9 +88,11 @@ protected:
 	virtual void BeginPlay() override;
 	void StaminaUpdate();
 
+	UPROPERTY(EditDefaultsOnly, meta=(ClampMin="1", UIMin="1"))
+	uint8 StaminaRegenFrameRate = 60;
+
 	float Stamina = 0.0f;
 	FTimerHandle StaminaTimerHandle;
-	float StaminaUpdateTime;
+	// float StaminaUpdateTime;
 	float StaminaModifier;
-	uint8 StaminaRegenFrameRate = 60;
 };
