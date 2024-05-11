@@ -46,6 +46,14 @@ void UBGCHealthComponent::OnTakeAnyDamage(AActor* DamagedActor, float Damage, co
 	SetHealth(Health - Damage * (1 - DamageResistance));
 }
 
+void UBGCHealthComponent::Heal(const float HealValue, const bool PureHeal)
+{
+	if (IsDead() || FMath::IsNearlyZero(HealValue)) return;
+
+	if (PureHeal) SetHealth(Health + HealValue);
+	else SetHealth(Health + HealValue * (1 - HealReduction));
+}
+
 void UBGCHealthComponent::SetHealth(const float NewHealth)
 {
 	if (FMath::IsNearlyEqual(NewHealth, Health)) return;

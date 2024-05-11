@@ -54,6 +54,13 @@ public:
 	UFUNCTION(BlueprintPure)
 	FORCEINLINE float GetHealth() const { return Health; }
 
+	/** Get normalized current health.*/
+	UFUNCTION(BlueprintPure)
+	FORCEINLINE float GetHealthNorm() const
+	{
+		return FMath::GetMappedRangeValueClamped(FVector2D(0.0f, MaxHealth), FVector2D(0.0f, 1.0f), Health);
+	}
+
 	/** Get current barriers.*/
 	UFUNCTION(BlueprintPure, Category = "Protection")
 	FORCEINLINE uint8 GetBarriers() const { return Barriers; }
@@ -67,12 +74,31 @@ public:
 	UFUNCTION(BlueprintCallable)
 	FORCEINLINE float GetResistance() const { return DamageResistance; }
 
+	UFUNCTION(BlueprintCallable)
+	FORCEINLINE void SetHealReduction(const float NewReduction)
+	{
+		HealReduction = FMath::Clamp(NewReduction, 0.0f, 1.0f);
+	}
+
+	UFUNCTION(BlueprintCallable)
+	FORCEINLINE float GetHealReduction() const { return HealReduction; }
+
+	/**
+	 * Tries to increase health value. Not working if owner is dead.
+	 * Accounts heal reduction. Ignore reduction if pure heal.*/
+	UFUNCTION(BlueprintCallable, meta=(AdvancedDisplay=1))
+	void Heal(const float HealValue = 0.0f, const bool PureHeal = false);
+
 protected:
 	virtual void BeginPlay() override;
 
-	/** Normalized resistance value.*/
-	UPROPERTY(EditAnywhere, BlueprintReadOnly, meta = (ClampMin="0", ClampMax="1", UIMin="0", UIMax="1"))
+	/** Normalized resistance value. Decrease incoming non-pure damage.*/
+	UPROPERTY(EditAnywhere, meta = (ClampMin="0", ClampMax="1", UIMin="0", UIMax="1"))
 	float DamageResistance = 0.0f;
+
+	/** Normalized reduction value. Decrease incoming non-pure heal.*/
+	UPROPERTY(EditAnywhere, meta = (ClampMin="0", ClampMax="1", UIMin="0", UIMax="1"))
+	float HealReduction = 0.0f;
 
 	float Health = 0.0f;
 	uint8 Barriers = 0;
